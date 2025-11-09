@@ -1,0 +1,83 @@
+local Notification = {}
+
+function Notification:Show(titleText, messageText)
+    local gui = Instance.new("ScreenGui", game.Players.LocalPlayer:WaitForChild("PlayerGui"))
+    gui.Name = "нотификайшен"
+    gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+    local frame = Instance.new("Frame", gui)
+    frame.Size = UDim2.new(0, 210, 0, 80)
+    frame.Position = UDim2.new(0.5, -105, 0.6, 0)
+    frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    frame.BorderSizePixel = 0
+
+    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 3)
+    Instance.new("UIStroke", frame).Color = Color3.fromRGB(181, 181, 181)
+
+    local gradient = Instance.new("UIGradient", frame)
+    gradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(23, 23, 23)),
+        ColorSequenceKeypoint.new(0.998, Color3.fromRGB(40, 40, 40)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(137, 137, 137))
+    }
+
+    local title = Instance.new("TextLabel", frame)
+    title.Size = UDim2.new(1, 0, 0, 30)
+    title.BackgroundTransparency = 1
+    title.TextColor3 = Color3.new(1, 1, 1)
+    title.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
+    title.TextSize = 14
+    title.Text = titleText or "Notification"
+
+    local message = Instance.new("TextLabel", frame)
+    message.Name = "12"
+    message.Size = UDim2.new(0, 160, 0, 44)
+    message.Position = UDim2.new(0, 0, 0.45, 0)
+    message.BackgroundTransparency = 1
+    message.TextColor3 = Color3.new(1, 1, 1)
+    message.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Regular, Enum.FontStyle.Normal)
+    message.TextSize = 15
+    message.Text = messageText or "Message"
+
+    local icon = Instance.new("ImageLabel", frame)
+    icon.Size = UDim2.new(0, 30, 0, 30)
+    icon.Position = UDim2.new(0.7619, 0, 0.5375, 0)
+    icon.BackgroundTransparency = 1
+    icon.Image = "rbxassetid://17687447043"
+
+    coroutine.wrap(function()
+        local TweenService = game:GetService("TweenService")
+        while true do
+            local rotate = TweenService:Create(icon, TweenInfo.new(1), {Rotation = icon.Rotation + 360})
+            rotate:Play()
+            rotate.Completed:Wait()
+        end
+    end)()
+
+    local ez = Instance.new("Frame", frame)
+    ez.Name = "ez"
+    ez.Size = UDim2.new(0, 198, 0, 6)
+    ez.Position = UDim2.new(0.02857, 0, 1.075, 0)
+    ez.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ez.BorderSizePixel = 0
+    Instance.new("UIStroke", ez).Thickness = 1.5
+    Instance.new("UICorner", ez).CornerRadius = UDim.new(1, 0)
+
+    local fill = Instance.new("Frame", ez)
+    fill.Name = "Fill"
+    fill.Size = UDim2.new(0, 0, 1, 0)
+    fill.Position = UDim2.new(0, 0, 0, 0)
+    fill.BackgroundColor3 = Color3.fromRGB(38, 38, 38)
+    fill.BorderSizePixel = 0
+    fill.ZIndex = ez.ZIndex + 1
+    Instance.new("UICorner", fill).CornerRadius = UDim.new(1)
+
+    local TweenService = game:GetService("TweenService")
+    TweenService:Create(fill, TweenInfo.new(3), {Size = UDim2.new(1, 0, 1, 0)}):Play()
+
+    task.delay(3, function()
+        gui:Destroy()
+    end)
+end
+
+return Notification
