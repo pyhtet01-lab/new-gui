@@ -1,0 +1,104 @@
+local G2L = {};
+local RunService = game:GetService("RunService")
+
+-- StarterGui.водяной знак
+G2L["1"] = Instance.new("ScreenGui", game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"));
+G2L["1"]["Enabled"] = true;
+G2L["1"]["Name"] = [[водяной знак]];
+G2L["1"]["ZIndexBehavior"] = Enum.ZIndexBehavior.Sibling;
+
+-- StarterGui.водяной знак.Frame
+G2L["2"] = Instance.new("Frame", G2L["1"]);
+G2L["2"]["BorderSizePixel"] = 0;
+G2L["2"]["BackgroundColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["2"]["Size"] = UDim2.new(0, 150, 0, 25);
+G2L["2"]["Position"] = UDim2.new(0, 270, 0, -35);
+G2L["2"]["BorderColor3"] = Color3.fromRGB(0, 0, 0);
+
+G2L["3"] = Instance.new("UICorner", G2L["2"]);
+G2L["3"]["CornerRadius"] = UDim.new(0, 5);
+
+G2L["4"] = Instance.new("UIStroke", G2L["2"]);
+G2L["4"]["Thickness"] = 2;
+
+G2L["5"] = Instance.new("UIGradient", G2L["2"]);
+G2L["5"]["Color"] = ColorSequence.new{
+    ColorSequenceKeypoint.new(0.000, Color3.fromRGB(33, 7, 55)),
+    ColorSequenceKeypoint.new(0.995, Color3.fromRGB(82, 53, 98)),
+    ColorSequenceKeypoint.new(0.997, Color3.fromRGB(41, 16, 62)),
+    ColorSequenceKeypoint.new(1.000, Color3.fromRGB(139, 125, 150))
+};
+
+-- Название
+G2L["6"] = Instance.new("TextLabel", G2L["2"]);
+G2L["6"]["TextWrapped"] = true;
+G2L["6"]["TextSize"] = 12;
+G2L["6"]["FontFace"] = Font.new([[rbxasset://fonts/families/PressStart2P.json]]);
+G2L["6"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["6"]["BackgroundTransparency"] = 1;
+G2L["6"]["Size"] = UDim2.new(0, 66, 0, 11);
+G2L["6"]["Text"] = [[PahTeTHub]];
+G2L["6"]["Position"] = UDim2.new(0.02963, -2, -0.06957, 1);
+Instance.new("UICorner", G2L["6"]).CornerRadius = UDim.new(0, 5);
+
+-- Дата
+G2L["8"] = Instance.new("TextLabel", G2L["2"]);
+G2L["8"]["TextWrapped"] = true;
+G2L["8"]["TextSize"] = 10;
+G2L["8"]["FontFace"] = Font.new([[rbxasset://fonts/families/PressStart2P.json]]);
+G2L["8"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["8"]["BackgroundTransparency"] = 1;
+G2L["8"]["Size"] = UDim2.new(0, 65, 0, 10);
+G2L["8"]["Position"] = UDim2.new(0.48889, 4, -0.06957, 1);
+Instance.new("UICorner", G2L["8"]).CornerRadius = UDim.new(0, 5);
+
+-- Метка FREE
+G2L["b"] = Instance.new("TextLabel", G2L["2"]);
+G2L["b"]["TextWrapped"] = true;
+G2L["b"]["TextSize"] = 12;
+G2L["b"]["FontFace"] = Font.new([[rbxasset://fonts/families/PressStart2P.json]]);
+G2L["b"]["TextColor3"] = Color3.fromRGB(255, 0, 0);
+G2L["b"]["BackgroundTransparency"] = 1;
+G2L["b"]["Size"] = UDim2.new(0, 65, 0, 13);
+G2L["b"]["Text"] = [[free]];
+G2L["b"]["Position"] = UDim2.new(0, 2, 0.36522, 2);
+Instance.new("UICorner", G2L["b"]).CornerRadius = UDim.new(0, 5);
+
+-- Вертикальная линия
+G2L["d"] = Instance.new("Frame", G2L["2"]);
+G2L["d"]["BackgroundColor3"] = Color3.fromRGB(0, 0, 0);
+G2L["d"]["Size"] = UDim2.new(0, 3, 0, 26);
+G2L["d"]["Position"] = UDim2.new(-0.26667, 110, 4.85043, -122);
+G2L["d"]["BackgroundTransparency"] = 0.25;
+
+-- Таймер
+G2L["e"] = Instance.new("TextLabel", G2L["2"]);
+G2L["e"]["TextWrapped"] = true;
+G2L["e"]["TextSize"] = 10;
+G2L["e"]["FontFace"] = Font.new([[rbxasset://fonts/families/PressStart2P.json]]);
+G2L["e"]["TextColor3"] = Color3.fromRGB(255, 255, 255);
+G2L["e"]["BackgroundTransparency"] = 1;
+G2L["e"]["Size"] = UDim2.new(0, 65, 0, 12);
+G2L["e"]["Position"] = UDim2.new(0.48889, 4, 0.49565, 1);
+Instance.new("UICorner", G2L["e"]).CornerRadius = UDim.new(0, 5);
+
+-- Логика даты и таймера
+local months = {
+    "января", "февраля", "марта", "апреля", "мая", "июня",
+    "июля", "августа", "сентября", "октября", "ноября", "декабря"
+}
+local date = os.date("*t")
+local day = string.format("%02d", date.day)
+local monthName = months[date.month]
+G2L["8"].Text = day .. "." .. monthName
+
+local startTime = tick()
+RunService.Heartbeat:Connect(function()
+    local elapsed = tick() - startTime
+    local hrs = math.floor(elapsed / 3600)
+    local mins = math.floor((elapsed % 3600) / 60)
+    local secs = math.floor(elapsed % 60)
+    G2L["e"].Text = string.format("%02d:%02d:%02d", hrs, mins, secs)
+end)
+
+return G2L["1"], require;
